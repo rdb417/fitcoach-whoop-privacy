@@ -3,6 +3,7 @@
 
     python3 render.py                 # all jobs, in parallel
     python3 render.py master:16x9     # one job
+    python3 render.py --audio-only    # rebuild audio, remux into existing videos
 Outputs land in out/. Then run `python3 qc.py`.
 """
 import json
@@ -37,14 +38,35 @@ def run(job):
     return job
 
 
+def remux(job):
+    """Swap in freshly built audio without re-rendering picture."""
+    import subprocess
+    cut = job.split(":")[0]
+    for k in ("text", "clean"):
+        p = JOBS[job].get(k)
+        if p and p.exists():
+            tmp = p.with_suffix(".tmp.mp4")
+            subprocess.check_call(["ffmpeg", "-v", "error", "-y", "-i", str(p), "-i", str(BUILD / f"{cut}.wav"),
+                                   "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "256k",
+                                   "-ar", "48000", "-movflags", "+faststart", "-shortest", str(tmp)])
+            tmp.replace(p)
+            print("remuxed", p.name, flush=True)
+
+
 if __name__ == "__main__":
     OUT.mkdir(exist_ok=True)
     BUILD.mkdir(exist_ok=True)
-    jobs = sys.argv[1:] or list(JOBS)
+    args = sys.argv[1:]
+    audio_only = "--audio-only" in args
+    jobs = [a for a in args if not a.startswith("--")] or list(JOBS)
     for cut in sorted({j.split(":")[0] for j in jobs}):
         info = audio.write(cut, BUILD / f"{cut}.wav")
         (BUILD / f"audio_{cut}.json").write_text(json.dumps(info, indent=1))
         print(f"audio {cut}: {info}", flush=True)
+    if audio_only:
+        for j in jobs:
+            remux(j)
+        sys.exit(0)
     with Pool(min(4, len(jobs))) as pool:
         for j in pool.imap_unordered(run, jobs):
             print("DONE", j, flush=True)

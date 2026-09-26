@@ -19,7 +19,7 @@ from .edl import MASTER_BPM, CUT_BPM
 SR = C.SR
 RNG = np.random.default_rng(7)
 TARGET_LUFS = -14.0
-CEILING_DB = -2.2  # sample-peak ceiling; keeps true peak under -1 dBTP after AAC
+CEILING_DB = -2.5  # true-peak ceiling (4x oversampled); AAC adds up to ~1.3 dB on transients
 MUSIC_OFFSET = {"master": 0.0, "cutdown": 0.0}
 
 
@@ -51,8 +51,9 @@ def kick(heavy=False):
     t = tt(0.6 if heavy else 0.45)
     f = 44 + (140 if heavy else 110) * np.exp(-t / 0.035)
     body = sine_sweep(t, f) * np.exp(-t / (0.26 if heavy else 0.17))
-    click = filt(noise(0.004, False)[:, 0], "highpass", 2000)
-    body[: len(click)] += click * 0.3
+    click = filt(noise(0.006, False)[:, 0], "bandpass", [1500, 5000], 2) * np.hanning(int(0.006 * SR))
+    body[: len(click)] += click * 0.2
+    body[:96] *= np.linspace(0, 1, 96)  # 2ms attack: no codec ringing on the onset
     return st(np.tanh(body * 1.6) * 0.9)
 
 
@@ -303,7 +304,8 @@ MIXES = {"master": master_mix, "cutdown": cutdown_mix}
 
 def limiter(x, ceiling_db=CEILING_DB, look=0.005, release=0.08):
     ceil = 10 ** (ceiling_db / 20)
-    peak = np.abs(x).max(axis=1)
+    up = signal.resample_poly(x, 4, 1, axis=0)
+    peak = np.abs(up).max(axis=1).reshape(-1, 4).max(axis=1)[: len(x)]
     need = np.minimum(1.0, ceil / np.maximum(peak, 1e-9))
     w = int(look * SR)
     g = minimum_filter1d(need, size=2 * w + 1)
@@ -330,7 +332,8 @@ def build(cut):
     for a, b in silences + pre:
         mix[int(a * SR): int(b * SR)] = 0.0
     lufs = meter.integrated_loudness(mix)
-    return mix.astype(np.float32), dict(lufs=round(float(lufs), 2), peak_db=round(float(20 * np.log10(np.abs(mix).max())), 2),
+    tp = np.abs(signal.resample_poly(mix, 4, 1, axis=0)).max()
+    return mix.astype(np.float32), dict(lufs=round(float(lufs), 2), true_peak_db=round(float(20 * np.log10(tp)), 2),
                                         silences=silences, music=str(track_path) if track_path else "synth placeholder")
 
 
