@@ -701,6 +701,12 @@ def find_footage(src):
 
 
 def get_plate(src, w, h, fx=0.5):
+    if src.startswith("line:"):
+        from .lineart import LinePlate
+        return LinePlate(src[5:], w, h, "16x9" if w > h else "9x16"), "line-art"
+    if src == "gold":
+        from .lineart import GoldPlate
+        return GoldPlate(w, h), "graphic"
     if src != "black":
         p = find_footage(src)
         if p:

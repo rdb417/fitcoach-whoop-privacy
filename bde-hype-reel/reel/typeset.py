@@ -73,7 +73,7 @@ def _solid_fill(mask, rgb):
     return im
 
 
-class Glyphs:
+class _Glyphs:
     """A rendered run of text: RGBA image plus the layout box it occupies.
 
     `box` is (x0, y0) offset of the image relative to the pen origin at the
@@ -107,6 +107,8 @@ class Glyphs:
                     else _solid_fill(mask, color))
         self.pad = pad
 
+
+Glyphs = _Glyphs
 
 # ---------------------------------------------------------------- layout
 
@@ -158,9 +160,14 @@ def _wrap(items, widths, space, maxw, prefer=()):
 class Card:
     """All sprites for one shot's text, laid out for one format."""
 
-    def __init__(self, elements, fmt_name, layout, shot_dur, hold=False, lower=None):
+    def __init__(self, elements, fmt_name, layout, shot_dur, hold=False, lower=None, ink=None):
         F = C.FORMATS[fmt_name]
         self.F, self.fmt = F, fmt_name
+
+        def Glyphs(text, fnt, gold, tracking=0.0):  # noqa: N802 - shadows the class on purpose
+            if ink is not None:
+                return _Glyphs(text, fnt, False, tracking, color=ink)
+            return _Glyphs(text, fnt, gold, tracking)
         self.W, self.H = F["w"], F["h"]
         self.shot_dur, self.hold, self.layout = shot_dur, hold, layout
         sx0, sy0, sx1, sy1 = F["safe"]

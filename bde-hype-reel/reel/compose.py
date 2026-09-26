@@ -14,6 +14,7 @@ from . import config as C
 from .edl import CUTS
 from .plates import get_plate, smoothstep
 from .typeset import Card, ease_out_expo, clamp01
+from .lineart import Chrome
 
 # ------------------------------------------------------------------ grade
 
@@ -122,12 +123,17 @@ def render(cut_name, fmt, wav, outputs, stills=None, log=print):
         dur = sh["t1"] - sh["t0"]
         layout = sh.get("layout", "lower")
         card = (Card(sh["card"], fmt, layout, dur, hold=(layout == "end"),
-                     lower=F["inset_lower"] if inset else None) if sh.get("card") else None)
+                     lower=F["inset_lower"] if inset else None,
+                     ink=C.BG if sh.get("ink") == "bg" else None) if sh.get("card") else None)
+        ch = sh.get("chrome")
+        chrome = Chrome(fmt, ch["label"], ch["idx"], ch["total"], dur) if ch else None
         focus = sh.get("focus", {}).get(fmt, (0.5, 0.5))
         for f in range(f0, f1):
             tl = (f - f0) / C.FPS
             ts = sh["remap"](tl) if sh.get("remap") else sh.get("src_in", 0.0) + tl
-            fr = grade(plate.frame(ts))
+            fr = plate.frame(ts)
+            if not getattr(plate, "graphic", False):
+                fr = grade(fr)
             ph, pw = fr.shape[:2]
             im = Image.fromarray((fr * 255 + 0.5).astype(np.uint8))
             shake = sh.get("shake", 0.0)
@@ -156,7 +162,14 @@ def render(cut_name, fmt, wav, outputs, stills=None, log=print):
             if "text" in enc:
                 img = base
                 txt = card.render(tl) if card else None
-                if card and layout == "lower" and not inset:
+                if chrome is not None:
+                    cr = chrome.render(tl)
+                    if txt is None:
+                        txt = cr
+                    else:
+                        txt = cr.copy()
+                        txt.alpha_composite(card.render(tl))
+                if card and layout == "lower" and not inset and not getattr(plate, "graphic", False):
                     img = img * scrim
                 if txt is not None:
                     a = np.asarray(txt.getchannel("A"), np.float32) / 255
