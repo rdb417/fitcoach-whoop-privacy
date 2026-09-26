@@ -38,6 +38,8 @@ FORMATS = {
         lower=930,
         head=104, head_xl=150, mono=330, label=44, label_sm=36, url=92,
         gap=26,
+        inset=(480, 130, 1440, 670),  # 960x540 window on black, card below
+        inset_lower=930,
     ),
     "9x16": dict(
         w=1080, h=1920,
@@ -46,5 +48,7 @@ FORMATS = {
         lower=1560,
         head=116, head_xl=170, mono=300, label=48, label_sm=38, url=100,
         gap=30,
+        inset=(120, 290, 960, 1340),  # 840x1050 (4:5) window on black
+        inset_lower=1640,
     ),
 }

@@ -102,3 +102,17 @@ CUTDOWN = dict(
 )
 
 CUTS = {"master": MASTER, "cutdown": CUTDOWN}
+
+# Inset treatment preview: footage in a gold-hairline window on the black
+# card, card copy below. Set `inset=True` on any shot to use it.
+INSET_PREVIEW = dict(
+    name="inset_preview",
+    duration=10.0,
+    shots=[
+        dict(n=14, t0=0.0, t1=2.5, src="liftoff", inset=True, card=[E("Full thrust.", at=0.3)]),
+        dict(n=8, t0=2.5, t1=5.0, src="quantum", inset=True, card=[E("Deeply *entangled.*", at=0.3, stagger=0.625)]),
+        dict(n=7, t0=5.0, t1=7.5, src="battery", inset=True, card=[E("*Serious* staying power.", at=0.3, stagger=0.625)]),
+        dict(n=9, t0=7.5, t1=10.0, src="robot", inset=True, card=[E("It *moves.*", at=0.3, stagger=0.625)]),
+    ],
+)
+CUTS["inset_preview"] = INSET_PREVIEW

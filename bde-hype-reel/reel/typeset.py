@@ -158,7 +158,7 @@ def _wrap(items, widths, space, maxw, prefer=()):
 class Card:
     """All sprites for one shot's text, laid out for one format."""
 
-    def __init__(self, elements, fmt_name, layout, shot_dur, hold=False):
+    def __init__(self, elements, fmt_name, layout, shot_dur, hold=False, lower=None):
         F = C.FORMATS[fmt_name]
         self.F, self.fmt = F, fmt_name
         self.W, self.H = F["w"], F["h"]
@@ -245,7 +245,7 @@ class Card:
             gaps.append(g)
         total = sum(heights) + sum(gaps)
         if layout == "lower":
-            y = F["lower"] - total
+            y = (lower or F["lower"]) - total
         else:
             y = (sy0 + sy1) / 2 - total / 2 if self.fmt == "9x16" else self.H / 2 - total / 2
         y = int(y)
