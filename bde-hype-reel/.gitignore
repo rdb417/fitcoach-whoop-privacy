@@ -1,0 +1,9 @@
+build/
+out/*.mp4
+__pycache__/
+*.pyc
+fonts/*-VF.ttf
+footage/raw/*
+footage/generated/*
+!footage/*/.gitkeep
+audio/music/track.*
