@@ -28,3 +28,14 @@ checked it frame by frame for logos, patches, faces and identifiable hardware.
 | Placeholder score (drone, beat, riser, swell) | Synthesised in `reel/audio.py` | Owned, no restrictions |
 | SFX (roar, sub drops, impacts, kicks, whoosh, press slam, docking clunk) | Synthesised in `reel/audio.py` | Owned, no restrictions |
 | Licensed music track | **pending from client** | **pending** (record licensor, track, licence ID, term, territory, platforms) |
+
+### Client-supplied Gemini (Veo) clips, 2026-09-27
+
+| Source id | Original file | Used in | Notes |
+|---|---|---|---|
+| `engine_fire` | gemini_generated_video_0585da68.mp4 (1280x720, 24fps, 10s) | master 1, 3; cutdown 1 | Baked 66px letterbox cropped off; ignition at 1.08s. Generic engine, no markings seen. |
+| `liftoff` | gemini_generated_video_aea4b30d.mp4 | master 14 | **Tri-core vehicle reads as a Falcon Heavy look-alike.** No wordmark or flag seen. Client decision pending. |
+| `quantum` | gemini_generated_video_94e13f08.mp4 | master 8, cutdown 8 (inset) | Used from 3.0s, after the dewar (which carries a small printed label) leaves frame. |
+| `quantum_chip` | gemini_generated_video_bc1885d2.mp4 | not used yet | First ~2s morph between two chip designs; usable from ~2.5s. |
+
+All four were generated in the Gemini app by the client and carry Google's **visible ✦ watermark** (bottom right) plus invisible SynthID. The watermark is visible in the 16:9 masters (not removed). These are draft placements: for release, regenerate clean 1080p takes via the Gemini API (`veo.py`), which per third-party reports carries no visible watermark (SynthID only).

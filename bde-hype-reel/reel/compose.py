@@ -142,7 +142,8 @@ def render(cut_name, fmt, wav, outputs, stills=None, log=print):
                 z *= 1 + 0.05 * tl / dur  # slow push inside the window
             dx = dy = 0.0
             if shake:
-                ramp = smoothstep(0.35, 0.7, ts) if src == "engine_fire" else 1.0
+                s0 = sh.get("shake_at", 0.35)
+                ramp = smoothstep(s0, s0 + 0.35, ts) if src == "engine_fire" else 1.0
                 a = shake * 0.006 * pw * ramp
                 dx = a * (np.sin(tl * 53.1) + 0.6 * np.sin(tl * 97.3 + 1))
                 dy = a * (np.sin(tl * 61.7 + 2) + 0.6 * np.sin(tl * 83.9))

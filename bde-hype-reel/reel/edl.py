@@ -22,11 +22,11 @@ MASTER = dict(
     name="master",
     duration=45.0,
     shots=[
-        dict(n=1, t0=0.0, t1=3.0, src="engine_fire", src_in=0.0, shake=1.0),
+        dict(n=1, t0=0.0, t1=3.0, src="engine_fire", src_in=0.58, shake=1.0, fx=0.6, shake_at=1.05),  # Veo take ignites at 1.08s
         dict(n=2, t0=3.0, t1=5.0, src="launch_pad", src_in=0.0,
              card=[E("Most funds wait.", at=0.2)]),
         dict(n=3, t0=5.0, t1=7.0, src="engine_fire", src_in=3.0, zoom=1.7, shake=0.5,
-             focus={"16x9": (0.42, 0.47), "9x16": (0.5, 0.42)},
+             focus={"16x9": (0.66, 0.5), "9x16": (0.5, 0.5)},
              card=[E("We *don't.*", at=0.05, stagger=0.3)]),
         dict(n=4, t0=7.0, t1=10.0, src="black", layout="center",
              card=[E("BDE", role="mono", anim="letters", letters_at=[0.5, 1.125, 1.75]),
@@ -40,7 +40,7 @@ MASTER = dict(
         dict(n=7, t0=15.0, t1=17.5, src="line:storage",
              chrome=dict(label="Energy Storage", idx=3, total=6),
              card=[E("*Serious* staying power.", at=0.1, stagger=0.625)]),
-        dict(n=8, t0=17.5, t1=20.0, src="line:entangled",
+        dict(n=8, t0=17.5, t1=20.0, src="quantum", src_in=3.0, inset=True,
              chrome=dict(label="Quantum", idx=4, total=6),
              card=[E("Deeply *entangled.*", at=0.1, stagger=0.625)]),
         dict(n=9, t0=20.0, t1=22.5, src="line:moves",
@@ -56,7 +56,7 @@ MASTER = dict(
         # docking contact at src 3.4s = 32.9 on the timeline
         dict(n=13, t0=29.5, t1=35.0, src="docking", src_in=0.0,
              card=[E("Never pull out *early.*", at=1.4, stagger=2.0)]),
-        dict(n=14, t0=35.0, t1=39.0, src="liftoff", src_in=0.0,
+        dict(n=14, t0=35.0, t1=39.0, src="liftoff", src_in=3.5,
              card=[E("All the way.", at=0.5)]),
         # 15: black, then the frame floods gold as "Dominant" slams on the final hit
         dict(n=15, t0=39.0, t1=39.6, src="black", layout="center",
@@ -90,7 +90,7 @@ CUTDOWN = dict(
     name="cutdown",
     duration=15.0,
     shots=[
-        dict(n=1, t0=0.0, t1=2.0, src="engine_fire", src_in=0.25, shake=1.0),
+        dict(n=1, t0=0.0, t1=2.0, src="engine_fire", src_in=0.83, shake=1.0, fx=0.6, shake_at=1.05),
         dict(n=5, t0=2.0, t1=3.2, src="line:thrust",
              chrome=dict(label="Space", idx=1, total=5),
              card=[E("Full thrust.", at=0.05)]),
@@ -100,7 +100,7 @@ CUTDOWN = dict(
         dict(n=7, t0=4.4, t1=5.6, src="line:storage",
              chrome=dict(label="Energy Storage", idx=3, total=5),
              card=[E("*Serious* staying power.", at=0.05, stagger=0.3)]),
-        dict(n=8, t0=5.6, t1=6.8, src="line:entangled",
+        dict(n=8, t0=5.6, t1=6.8, src="quantum", src_in=3.0, inset=True,
              chrome=dict(label="Quantum", idx=4, total=5),
              card=[E("Deeply *entangled.*", at=0.05, stagger=0.3)]),
         dict(n=9, t0=6.8, t1=8.0, src="line:moves",
