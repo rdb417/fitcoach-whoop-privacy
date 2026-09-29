@@ -230,17 +230,71 @@ def duck_env(total, hits, depth=0.7, release=0.4):
     return env[:, None].astype(np.float32)
 
 
-def load_track(total, offset):
+TRACK_BPM = 99.0  # measured on the supplied track; it is stretched onto each cut's grid
+# Per cut: (target BPM, [(timeline start, timeline end, fade in, fade out), ...]).
+# The first section starts `lead` seconds before the first grid downbeat so the
+# track's groove lands on a kick exactly at `lock`; later sections re-enter on a kick.
+TRACK_PLAN = {
+    "master": dict(bpm=MASTER_BPM, lock=10.0, groove_from=8.0,
+                   sections=[(3.0, 25.0, 1.0, 0.0), (27.0, 45.0, 0.0, 3.0)]),
+    "cutdown": dict(bpm=CUT_BPM, lock=2.0, groove_from=8.0,
+                    sections=[(2.0, 8.0, 0.02, 0.0), (9.0, 15.0, 0.0, 2.0)]),
+}
+
+
+def find_track():
     for ext in (".wav", ".flac", ".mp3", ".m4a", ".aif", ".aiff"):
         p = C.AUDIO / "music" / f"track{ext}"
         if p.exists():
-            raw = subprocess.check_output(["ffmpeg", "-v", "error", "-ss", str(offset), "-i", str(p),
-                                           "-t", str(total), "-ac", "2", "-ar", str(SR), "-f", "f32le", "-"])
-            x = np.frombuffer(raw, np.float32).reshape(-1, 2).copy()
-            out = np.zeros((int(total * SR), 2), np.float32)
-            out[: len(x)] = x[: len(out)]
-            return out, p
-    return None, None
+            return p
+    return None
+
+
+def kicks(x):
+    """Times (s) of low-end onsets, i.e. kicks, in a stereo float buffer."""
+    mono = x.mean(axis=1)
+    lo = np.abs(filt(mono, "lowpass", 120))
+    hop = 240
+    env = lo[: len(lo) // hop * hop].reshape(-1, hop).mean(axis=1)
+    on = np.maximum(0, np.diff(env, prepend=env[0]))
+    pk, _ = signal.find_peaks(on, height=np.percentile(on, 97), distance=int(0.3 * SR / hop))
+    return pk * hop / SR
+
+
+def load_track(cut, total):
+    p = find_track()
+    if p is None:
+        return None, None
+    plan = TRACK_PLAN[cut]
+    tempo = plan["bpm"] / TRACK_BPM
+    raw = subprocess.check_output(["ffmpeg", "-v", "error", "-i", str(p), "-af", f"atempo={tempo:.5f}",
+                                   "-ac", "2", "-ar", str(SR), "-f", "f32le", "-"])
+    x = np.frombuffer(raw, np.float32).reshape(-1, 2).copy()
+    k = kicks(x)
+    groove = plan["groove_from"] / tempo
+    first = k[k >= groove - 0.05][0]
+    out = np.zeros((int(total * SR), 2), np.float32)
+    src = None
+    for i, (t0, t1, fi, fo) in enumerate(plan["sections"]):
+        if i == 0:
+            src = first - (plan["lock"] - t0)
+        else:
+            want = src_end
+            src = k[np.argmin(np.abs(k - want))]  # re-enter on the nearest kick
+        seg = x[int(src * SR): int((src + t1 - t0) * SR)].copy()
+        n = len(seg)
+        if fi:
+            m = min(n, int(fi * SR))
+            seg[:m] *= np.linspace(0, 1, m)[:, None]
+        if fo:
+            m = min(n, int(fo * SR))
+            seg[-m:] *= np.linspace(1, 0, m)[:, None]
+        else:
+            seg[-96:] *= np.linspace(1, 0, 96)[:, None]  # 2 ms, no click at a hard stop
+        a = int(t0 * SR)
+        out[a:a + n] = seg[: len(out) - a]
+        src_end = src + (t1 - t0) + (plan["sections"][i + 1][0] - t1 if i + 1 < len(plan["sections"]) else 0)
+    return out, p
 
 
 # ------------------------------------------------------------------ cue sheets
@@ -318,7 +372,7 @@ def limiter(x, ceiling_db=CEILING_DB, look=0.005, release=0.08):
 
 def build(cut):
     T, mus, sfx, duck, silences, pre = MIXES[cut]()
-    track, track_path = load_track(T, MUSIC_OFFSET[cut])
+    track, track_path = load_track(cut, T)
     if track is not None:
         mus = track
     mix = mus * duck + sfx
