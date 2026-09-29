@@ -39,3 +39,10 @@ checked it frame by frame for logos, patches, faces and identifiable hardware.
 | `quantum_chip` | gemini_generated_video_bc1885d2.mp4 | not used yet | First ~2s morph between two chip designs; usable from ~2.5s. |
 
 All four were generated in the Gemini app by the client and carry Google's **visible ✦ watermark** (bottom right) plus invisible SynthID. The watermark is visible in the 16:9 masters (not removed). These are draft placements: for release, regenerate clean 1080p takes via the Gemini API (`veo.py`), which per third-party reports carries no visible watermark (SynthID only).
+
+### Client-supplied Gemini (Veo) clips, 2026-09-29
+
+| Source id | Original file | Used in | Notes |
+|---|---|---|---|
+| `battery` | gemini_generated_video_7bedcef1.mp4 (1280x720, 24fps, 10s) | master 7, cutdown 7 (inset) | Clip has internal cuts at 1.38, 2.92, 4.46s; used from 5.0s (continuous). Car is an unbadged generic silhouette. No visible watermark. |
+| `robot` | gemini_generated_video_bab912e3.mp4 | master 9, cutdown 9 (inset) | Faceless black/gold humanoid; chest core is geometric, not a mark. Used from 6.0s. No visible watermark. |
