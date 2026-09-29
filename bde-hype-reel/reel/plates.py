@@ -136,10 +136,12 @@ def over(dst, rgb, alpha):
 
 
 class FootagePlate:
-    """Decodes a real clip once into memory at output res (cover-fit)."""
+    """Decodes only the needed window of a real clip into memory at output res
+    (cover-fit). Decoding whole clips per job exhausted RAM with 4 parallel jobs."""
 
-    def __init__(self, path, w, h, fx=0.5, fy=0.5, t_max=None):
+    def __init__(self, path, w, h, fx=0.5, fy=0.5, t_range=None):
         self.path, self.w, self.h = path, w, h
+        self.t0 = max(0.0, t_range[0] - 0.1) if t_range else 0.0
         info = json.loads(subprocess.check_output([
             "ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries",
             "stream=width,height:format=duration", "-of", "json", str(path)]))
@@ -148,15 +150,15 @@ class FootagePlate:
         cw, ch = int(round(sw * s)), int(round(sh * s))
         ox, oy = int((cw - w) * fx), int((ch - h) * fy)
         vf = f"fps={C.FPS},scale={cw}:{ch}:flags=lanczos,crop={w}:{h}:{ox}:{oy},format=rgb24"
-        cmd = ["ffmpeg", "-v", "error", "-i", str(path)]
-        if t_max:
-            cmd += ["-t", str(t_max)]
+        cmd = ["ffmpeg", "-v", "error", "-ss", f"{self.t0:.3f}", "-i", str(path)]
+        if t_range:
+            cmd += ["-t", f"{t_range[1] + 0.2 - self.t0:.3f}"]
         cmd += ["-vf", vf, "-f", "rawvideo", "-"]
         raw = subprocess.check_output(cmd)
         self.frames = np.frombuffer(raw, np.uint8).reshape(-1, h, w, 3)
 
     def frame(self, t):
-        i = int(np.clip(round(t * C.FPS), 0, len(self.frames) - 1))
+        i = int(np.clip(round((t - self.t0) * C.FPS), 0, len(self.frames) - 1))
         return self.frames[i].astype(np.float32) / 255.0
 
 
@@ -700,7 +702,7 @@ def find_footage(src):
     return None
 
 
-def get_plate(src, w, h, fx=0.5):
+def get_plate(src, w, h, fx=0.5, t_range=None):
     if src.startswith("line:"):
         from .lineart import LinePlate
         return LinePlate(src[5:], w, h, "16x9" if w > h else "9x16"), "line-art"
@@ -710,5 +712,5 @@ def get_plate(src, w, h, fx=0.5):
     if src != "black":
         p = find_footage(src)
         if p:
-            return FootagePlate(p, w, h, fx=fx), "footage:" + str(p.relative_to(C.ROOT))
+            return FootagePlate(p, w, h, fx=fx, t_range=t_range), "footage:" + str(p.relative_to(C.ROOT))
     return PROCEDURAL[src](w, h), "placeholder"

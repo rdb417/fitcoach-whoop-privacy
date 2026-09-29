@@ -116,9 +116,15 @@ def render(cut_name, fmt, wav, outputs, stills=None, log=print):
         src = sh["src"]
         inset = F["inset"] if sh.get("inset") else None
         tw, th = (inset[2] - inset[0], inset[3] - inset[1]) if inset else (W, H)
-        if (src, tw, th) not in plates:
-            plates[(src, tw, th)] = get_plate(src, tw, th, fx=sh.get("fx", 0.5))
-        plate, origin = plates[(src, tw, th)]
+        dur_ = sh["t1"] - sh["t0"]
+        if sh.get("remap"):
+            ts_ = [sh["remap"](k / C.FPS) for k in range(int(dur_ * C.FPS) + 1)]
+            t_range = (min(ts_), max(ts_))
+        else:
+            t_range = (sh.get("src_in", 0.0), sh.get("src_in", 0.0) + dur_)
+        # one plate per shot: footage decodes only its window, freed after the shot
+        plates.clear()
+        plate, origin = get_plate(src, tw, th, fx=sh.get("fx", 0.5), t_range=t_range)
         manifest.append(dict(shot=sh["n"], t0=sh["t0"], t1=sh["t1"], src=src, origin=origin))
         dur = sh["t1"] - sh["t0"]
         layout = sh.get("layout", "lower")
