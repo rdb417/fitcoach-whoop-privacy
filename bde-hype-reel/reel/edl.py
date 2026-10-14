@@ -71,6 +71,7 @@ MASTER = dict(
              card=[E("Space · Quantum · Energy · Physical AI · Industry",
                      role="label_sm", at=0.0, anim="fade"),
                    E("BDE", role="mono", at=0.0, anim="fade"),
+                   E("Where *founders* come first.", role="head", at=0.35, anim="fade"),
                    E("bde.vc", role="url", at=0.0, anim="fade")]),
     ],
 )
@@ -113,7 +114,8 @@ CUTDOWN = dict(
              card=[E("Never pull out *early.*", at=0.1, stagger=1.0)]),
         dict(n=16, t0=12.5, t1=15.0, src="black", layout="end",
              card=[E("BDE", role="mono", at=0.0, anim="slam"),
-                   E("bde.vc", role="url", at=0.45)]),
+                   E("Where *founders* come first.", role="head", at=0.4, stagger=0.3),
+                   E("bde.vc", role="url", at=0.9)]),
     ],
 )
 

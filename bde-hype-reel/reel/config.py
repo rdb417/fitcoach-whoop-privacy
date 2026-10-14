@@ -48,7 +48,7 @@ FORMATS = {
         lower=1560,
         head=116, head_xl=170, mono=300, label=48, label_sm=38, url=100,
         gap=30,
-        inset=(120, 290, 960, 1340),  # 840x1050 (4:5) window on black
-        inset_lower=1640,
+        inset=(120, 290, 960, 1290),  # 840x1000 window on black
+        inset_lower=1585,             # clears the BDE bug bottom-right
     ),
 }
