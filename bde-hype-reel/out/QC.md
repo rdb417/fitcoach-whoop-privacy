@@ -2,11 +2,11 @@
 
 | file | video | duration | loudness | true peak | silence-beat peak | size | result |
 |---|---|---|---|---|---|---|---|
-| master_16x9.mp4 | h264 1920x1080 @30 | 45.00s | -14.2 LUFS | -2.1 dBTP | -240 dBFS | 64.7 MB | PASS |
-| master_9x16.mp4 | h264 1080x1920 @30 | 45.00s | -14.2 LUFS | -2.1 dBTP | -240 dBFS | 71.1 MB | PASS |
-| master_16x9_textless.mp4 | h264 1920x1080 @30 | 45.00s | -14.2 LUFS | -2.1 dBTP | -240 dBFS | 71.7 MB | PASS |
-| master_9x16_textless.mp4 | h264 1080x1920 @30 | 45.00s | -14.2 LUFS | -2.1 dBTP | -240 dBFS | 75.7 MB | PASS |
-| cutdown_16x9.mp4 | h264 1920x1080 @30 | 15.00s | -14.1 LUFS | -2.2 dBTP | -240 dBFS | 19.4 MB | PASS |
+| master_16x9.mp4 | h264 1920x1080 @30 | 45.00s | -14.2 LUFS | -2.1 dBTP | -240 dBFS | 64.8 MB | PASS |
+| master_9x16.mp4 | h264 1080x1920 @30 | 45.00s | -14.2 LUFS | -2.1 dBTP | -240 dBFS | 71.3 MB | PASS |
+| master_16x9_textless.mp4 | h264 1920x1080 @30 | 45.00s | -14.2 LUFS | -2.1 dBTP | -240 dBFS | 71.6 MB | PASS |
+| master_9x16_textless.mp4 | h264 1080x1920 @30 | 45.00s | -14.2 LUFS | -2.1 dBTP | -240 dBFS | 76.1 MB | PASS |
+| cutdown_16x9.mp4 | h264 1920x1080 @30 | 15.00s | -14.1 LUFS | -2.2 dBTP | -240 dBFS | 19.5 MB | PASS |
 | cutdown_9x16.mp4 | h264 1080x1920 @30 | 15.00s | -14.1 LUFS | -2.2 dBTP | -240 dBFS | 22.0 MB | PASS |
 
 - Em dashes / double hyphens in on-screen text: none
