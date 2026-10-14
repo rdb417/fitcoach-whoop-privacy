@@ -49,7 +49,7 @@ MASTER = dict(
         # press hits at src 1.25s = 23.75 on the timeline (a downbeat)
         dict(n=10, t0=22.5, t1=25.0, src="line:harder",
              chrome=dict(label="Industry", idx=6, total=6),
-             card=[E("Built *harder.*", at=0.1, stagger=1.15)]),
+             card=[E("A tight grip on *industry.*", at=0.1, stagger=1.15)]),
         dict(n=11, t0=25.0, t1=27.0, src="black", grain=0.0),
         dict(n=12, t0=27.0, t1=29.5, src="ingot", src_in=0.0,
              card=[E("*Atoms.*", at=0.05)]),
