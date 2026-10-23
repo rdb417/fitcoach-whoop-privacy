@@ -39,7 +39,7 @@ Read `references/research-standards.md`, then research across the eight capabili
 
 Keep an evidence register as you go (claim, class, source, date, confidence). It feeds the citations and is saved alongside the tear sheet.
 
-If browsing tools are unavailable, say so, work from supplied materials, and set `meta.independent_research` to `false`. Never imply research you did not do.
+Record what research was actually possible in `meta.research_access`: `full` (search and page reads worked), `search_only` (search or databases worked but primary pages, such as the company site, could not be opened), or `none` (no live research; supplied materials only). The renderer prints a matching banner unless you write a more specific `meta.alert`. Never imply research you did not do.
 
 ### 3. Apply the industrial AI framework
 Read `references/industrial-ai-framework.md`. Pick the archetype lens and the three or four deployment dimensions that actually determine this company's success. Place each commercial claim on the maturity ladder. Identify the most plausible real source of differentiation, separate from the company's own framing.
@@ -51,7 +51,7 @@ Read `references/investment-assessment.md` and `references/firm-context.md`. Wor
 List what you could not establish and rank by how much the answer would change the view. The top three become call questions; the next one or two become "What needs validation".
 
 ### 6. Draft `tearsheet.json`
-Read `references/editorial-standards.md` and `templates/tearsheet.example.json`. Write the content file using the same schema. Use the evidence markup: `[n]` citations, `{CR}` company-reported, `{INF}` analyst inference, `{UNK}` unknown. Aim for 350 to 500 words.
+Read `references/editorial-standards.md` and `templates/tearsheet.example.json`. Write the content file using the same schema. Use the evidence markup: `[n]` citations, `{CR}` company-reported, `{INF}` analyst inference, `{UNK}` unknown. Aim for 380 to 460 words and no more than about 9 sources with short titles: in testing, that is what fits one page once the source list is counted. Leave `meeting` or `meeting_date` empty rather than writing "not supplied".
 
 ### 7. Render and check
 ```bash
@@ -60,7 +60,8 @@ python3 <skill-dir>/scripts/render_tearsheet.py <out-dir>/tearsheet.json --out-d
 Add `--paper a4` for A4. The script prints content warnings (uncited figures, promotional terms, generic questions, unused sources), writes HTML, Markdown, PDF and a PNG preview, and verifies the PDF is exactly one page.
 
 - Exit 2: fix the content errors listed.
-- Exit 3: more than one page. Cut lower-priority content (editorial-standards "When content does not fit") and re-render. Never shrink fonts or margins.
+- Exit 3: more than one page. The script prints where page 2 starts, so you can see whether the body or the source list spilled. Cut lower-priority content (editorial-standards "When content does not fit") and re-render. Never shrink fonts or margins.
+- After removing or merging sources, run the script with `--renumber` to renumber citations in reading order instead of editing numbers by hand.
 - Exit 4: no PDF engine. Deliver the HTML and Markdown and tell the user to print the HTML to PDF from a browser.
 
 Then open the PNG preview and look at it: check for clipping, an orphaned heading, badly unbalanced columns, and whether the page reads cleanly. Address every warning that reflects a real problem; some (for instance a figure in a quoted company claim that already carries a tag elsewhere in the sentence) can be left with a reason.

@@ -2,7 +2,7 @@
 
 Use this for the "Leitmotif relevance" line and for portfolio overlap checks. **This file is meant to be edited by the team.** Replace or extend the public facts below with the firm's own thesis notes, current portfolio, and any internal guidance. User-supplied fund context in a request always takes precedence over this file.
 
-Last updated: 2026-10-23 from public reporting. Facts below are as reported in the cited sources; verify anything that matters for a specific briefing.
+Last updated: 2026-10-23 from public reporting (Rhoda AI and RobCo entries checked the same day). Facts below are as reported in the cited sources; verify anything that matters for a specific briefing.
 
 ## Public profile
 
@@ -20,8 +20,8 @@ Use for adjacency and conflict checks. Confirm current status internally before 
 | Redwood Materials | Battery recycling and materials | TechCrunch (Mar 2025) |
 | Proxima Fusion | Fusion energy | TechCrunch (Mar 2025) |
 | Stoke Space | Reusable launch | TechCrunch (Mar 2025) |
-| RobCo | Modular industrial robotics, Munich | [Munich Startup, Series C](https://www.munich-startup.de/en/116681/robco-series-c/) |
-| Rhoda AI | General-purpose robots / robot foundation models | Secondary aggregators; confirm |
+| RobCo | Modular industrial robotics, Munich | Participant in Series C, early 2026 ([Munich Startup](https://www.munich-startup.de/en/116681/robco-series-c/)) |
+| Rhoda AI | Robot foundation models (video-predictive), direct competitor to robot-model companies such as Skild AI | Participant in $450M Series A, Mar 2026 ([Robotics 24/7](https://www.robotics247.com/article/rhoda-ai-exits-stealth-mode-with-450m-series-a), [raising.fi](https://raising.fi/news/rhoda-ai-series-a-march-2026)); lead investor reported inconsistently |
 
 TechCrunch also reported four fusion investments in total and EV, space and battery companies.
 
@@ -29,7 +29,7 @@ TechCrunch also reported four fusion investments in total and EV, space and batt
 
 ## Investment focus (as used by this skill)
 
-Industrial AI, manufacturing, electrification, energy, advanced materials, robotics, and related physical industries. Pre-meeting briefings typically concern seed to Series B companies. Edit this list to match the current thesis.
+Industrial AI, manufacturing, electrification, energy, advanced materials, robotics, and related physical industries. Pre-meeting briefings typically concern seed to Series B companies, but the firm has also joined large rounds (for example Rhoda AI's $450M Series A and RobCo's Series C), so a later-stage company is not automatically off-thesis; see `investment-assessment.md` §8 on stage mismatch. Edit this section to match the current thesis.
 
 ## Volkswagen Group relevance: how to handle it
 
@@ -46,5 +46,5 @@ Group structure changes; verify the entity names you use.
 Rules:
 - Phrase it as a hypothesis ("could be relevant to body-shop quality at Group plants {INF}"), never as access, a pilot, or a commitment.
 - If the company already works with a Group brand, cite the source and say what the relationship is (supplier, pilot, partnership announcement).
-- If there is no concrete match, leave Volkswagen out entirely. "Strong fit with the firm's industrial AI focus" is a complete answer.
+- If there is no concrete match, do not invent one. Either leave Volkswagen out or, when partners would reasonably expect an angle (automotive suppliers, battery, factory automation), say so briefly: "No concrete Volkswagen Group workflow match identified." That tells the reader the angle was checked.
 - Fit also covers the firm's thesis and portfolio, not only the LP. Many good fits have nothing to do with automotive.

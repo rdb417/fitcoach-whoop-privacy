@@ -10,7 +10,8 @@ Use this to turn research into a balanced pre-call hypothesis and three high-val
 5. Risk taxonomy
 6. Prioritizing unknowns
 7. Designing the three questions
-8. Writing section F
+8. Stage mismatch
+9. Writing section F
 
 ---
 
@@ -106,7 +107,16 @@ Weak versus strong:
 
 Add a short `why` for each: what the answer would tell the partner. Keep it to one line.
 
-## 8. Writing section F
+## 8. Stage mismatch
+
+The firm usually meets seed to Series B companies (see `firm-context.md`). When the target is much later stage (large rounds, multi-billion valuations, hundreds of staff), say so in `meta.alert` and adjust the sheet rather than writing it as if it were a seed deal:
+- Note possible reasons for the call (follow-on allocation, secondary, co-investment, strategic partnership, or a portfolio-company relationship) as a question to settle, not a guess.
+- Weight the analysis toward valuation support: revenue quality, growth, the cost of the next milestone, and what must be true for the current valuation.
+- One call question can target allocation, round terms or the reason for meeting.
+
+Equally, flag a very early company (pre-product, pre-founding team complete) so partners know the sheet is mostly about team and thesis.
+
+## 9. Writing section F
 
 - **What is interesting**: one or two points, each tied to evidence on the sheet. The best version names the mechanism of advantage and the condition under which it holds.
 - **What needs validation**: one or two risks that the research could not resolve and that would most change the view.

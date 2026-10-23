@@ -21,6 +21,8 @@ present for overflow and fill measurements.
 Usage:
     python render_tearsheet.py path/to/tearsheet.json [--out-dir DIR]
         [--paper letter|a4] [--check-only] [--no-pdf] [--chrome PATH]
+    python render_tearsheet.py path/to/tearsheet.json --renumber
+        (renumber sources in order of first citation and rewrite the JSON)
 """
 from __future__ import annotations
 
@@ -60,6 +62,20 @@ SNAPSHOT_KEYS = [
 
 WORD_TARGET = (350, 500)
 WORD_SOFT_LIMITS = (300, 560)
+MAX_SOURCES_COMFORTABLE = 10
+
+RESEARCH_ACCESS = {
+    "full": ("Independent web research plus supplied materials", None),
+    "search_only": ("Independent research via search and databases; primary pages could not be opened",
+                    "Live search worked, but primary pages (including the company site) could not be opened. "
+                    "Facts rest on databases and search-result text; verify before relying on them."),
+    "none": ("Supplied materials only; not independently verified",
+             "Live research was not available. This briefing relies on supplied materials and has not been "
+             "independently verified."),
+}
+ABBREVIATIONS = ["e.g.", "i.e.", "incl.", "approx.", "vs.", "etc.", "Inc.", "Co.", "Corp.", "Ltd.", "Dr.",
+                 "Mr.", "Ms.", "St.", "No.", "U.S.", "U.K.", "Jan.", "Feb.", "Mar.", "Apr.", "Aug.", "Sept.",
+                 "Sep.", "Oct.", "Nov.", "Dec.", "ca.", "est."]
 
 PROMO_TERMS = [
     "revolutionary", "revolutionize", "game-changing", "game changer", "cutting-edge",
@@ -168,13 +184,23 @@ def blocks_md(value) -> str:
     return "\n\n".join(out)
 
 
+def research_access(meta: dict) -> str:
+    access = meta.get("research_access")
+    if access in RESEARCH_ACCESS:
+        return access
+    if meta.get("independent_research") is False:
+        return "none"
+    return "full"
+
+
 def slugify(name: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-") or "company"
 
 
 def short_url(url: str) -> str:
-    u = re.sub(r"^https?://(www\.)?", "", url or "").rstrip("/")
-    return u if len(u) <= 58 else u[:55] + "…"
+    """Display form of a URL: the domain only (the full URL stays in the link)."""
+    u = re.sub(r"^https?://(www\.)?", "", url or "")
+    return u.split("/", 1)[0]
 
 
 # --------------------------------------------------------------------------- #
@@ -197,8 +223,10 @@ def check(data: dict) -> tuple[list[str], list[str], dict]:
         errors.append("company.one_liner is missing")
     if not meta.get("research_date"):
         errors.append("meta.research_date is missing (use the date research was performed)")
-    if "independent_research" not in meta:
-        warnings.append("meta.independent_research not set; state whether live research was possible")
+    if meta.get("research_access") is None and "independent_research" not in meta:
+        warnings.append("meta.research_access not set (full | search_only | none); state what research was possible")
+    elif meta.get("research_access") is not None and meta["research_access"] not in RESEARCH_ACCESS:
+        errors.append(f"meta.research_access must be one of {', '.join(RESEARCH_ACCESS)}")
     for key, letter, label in BODY_SECTIONS:
         if not section_text(sections.get(key)).strip():
             errors.append(f"Section {letter} ({label}) is empty: sections.{key}")
@@ -257,11 +285,22 @@ def check(data: dict) -> tuple[list[str], list[str], dict]:
         warnings.append(f"Source [{u}] is listed but never cited")
     if not sources:
         warnings.append("No sources listed; every material fact needs a source or an evidence tag")
+    if len(sources) > MAX_SOURCES_COMFORTABLE:
+        warnings.append(f"{len(sources)} sources; above ~{MAX_SOURCES_COMFORTABLE} the source list starts to "
+                        "cost body space. Merge same-publisher sources and keep titles short")
+    for s in sources:
+        title_words = len(str(s.get("title", "")).split())
+        if title_words > 9:
+            warnings.append(f"Source [{s.get('id')}] title is {title_words} words; shorten to ~6")
 
     # Figures without a citation or evidence tag in the same sentence.
-    for sentence in re.split(r"(?<=[.;!?])\s+|\n", prose + "\n" + snapshot_text):
+    checkable = prose + "\n" + snapshot_text
+    for abbr in ABBREVIATIONS:
+        checkable = checkable.replace(abbr, abbr.replace(".", "\u2024"))
+    for sentence in re.split(r"(?<=[.;!?])\s+|\n", checkable):
         if FIGURE_RE.search(sentence) and not CITE_RE.search(sentence) and not TAG_RE.search(sentence):
-            warnings.append(f"Figure without citation or tag: \"{sentence.strip()[:110]}\"")
+            shown = sentence.strip().replace("\u2024", ".")[:110]
+            warnings.append(f"Figure without citation or tag: \"{shown}\"")
 
     lowered = prose.lower()
     for term in PROMO_TERMS:
@@ -290,11 +329,7 @@ def meeting_line(meta: dict) -> str:
 
 
 def research_line(meta: dict) -> str:
-    basis = meta.get("research_basis")
-    if not basis:
-        basis = ("Independent web research plus supplied materials"
-                 if meta.get("independent_research", True)
-                 else "Supplied materials only; not independently verified")
+    basis = meta.get("research_basis") or RESEARCH_ACCESS[research_access(meta)][0]
     line = f"Research date {meta.get('research_date', 'n/a')} · {basis}"
     if meta.get("analyst"):
         line += f" · {meta['analyst']}"
@@ -311,11 +346,11 @@ def render_html(data: dict, paper: str) -> str:
         for key, label in SNAPSHOT_KEYS
     )
     alert = ""
+    default_alert = RESEARCH_ACCESS[research_access(meta)][1]
     if meta.get("alert"):
         alert = f'<div class="alert"><b>Read first.</b> {inline_html(meta["alert"])}</div>'
-    elif meta.get("independent_research") is False:
-        alert = ('<div class="alert"><b>Read first.</b> Live research was not available. This briefing '
-                 'relies on supplied materials and has not been independently verified.</div>')
+    elif default_alert:
+        alert = f'<div class="alert"><b>Read first.</b> {html.escape(default_alert)}</div>'
 
     body = "".join(
         f'<div class="sec"><h2><span class="letter">{letter}</span>{label}</h2>{blocks_html(sections.get(key))}</div>'
@@ -369,10 +404,11 @@ def render_md(data: dict) -> str:
     firm = meta.get("firm", "Leitmotif")
     sections, perspective = data.get("sections", {}), data.get("perspective", {})
     alert = ""
+    default_alert = RESEARCH_ACCESS[research_access(meta)][1]
     if meta.get("alert"):
         alert = f"> **Read first.** {inline_md(meta['alert'])}"
-    elif meta.get("independent_research") is False:
-        alert = "> **Read first.** Live research was not available. This briefing relies on supplied materials and has not been independently verified."
+    elif default_alert:
+        alert = f"> **Read first.** {default_alert}"
     qs = []
     for i, q in enumerate(data.get("questions", []), 1):
         if isinstance(q, dict):
@@ -488,13 +524,17 @@ def count_pages(pdf_path: Path) -> int:
     return len(re.findall(rb"/Type\s*/Page(?!s)", pdf_path.read_bytes()))
 
 
-def overflow_words(pdf_path: Path) -> int | None:
+def overflow_text(pdf_path: Path) -> str | None:
+    """Text that spilled past page 1, if pypdf or pdftotext can read it."""
     try:
         from pypdf import PdfReader  # type: ignore
+        pages = PdfReader(str(pdf_path)).pages
+        return " ".join((p.extract_text() or "") for p in pages[1:])
     except ImportError:
-        return None
-    pages = PdfReader(str(pdf_path)).pages
-    return sum(len((p.extract_text() or "").split()) for p in pages[1:])
+        pass
+    if shutil.which("pdftotext"):
+        return subprocess.run(["pdftotext", "-f", "2", str(pdf_path), "-"], capture_output=True, text=True).stdout
+    return None
 
 
 def make_preview(pdf_path: Path, html_path: Path, png_path: Path, chrome: str | None) -> bool:
@@ -531,6 +571,57 @@ def page_fill(png_path: Path) -> float | None:
 
 # --------------------------------------------------------------------------- #
 
+def renumber(data: dict) -> dict:
+    """Renumber sources in order of first citation (page reading order); uncited sources go last."""
+    company, meta = data.get("company", {}), data.get("meta", {})
+    order: list[int] = []
+
+    def collect(text):
+        for m in CITE_RE.finditer(str(text)):
+            for i in expand_cites(m.group(1)):
+                if i not in order:
+                    order.append(i)
+
+    collect(company.get("one_liner", ""))
+    for k, _ in SNAPSHOT_KEYS:
+        collect(company.get(k, ""))
+    collect(meta.get("alert", ""))
+    for k, _, _ in BODY_SECTIONS:
+        collect(section_text(data.get("sections", {}).get(k)))
+    for k, _ in PERSPECTIVE_KEYS:
+        collect(data.get("perspective", {}).get(k, ""))
+    for q in data.get("questions", []):
+        collect(json.dumps(q))
+    for s in data.get("sources", []):
+        if s.get("id") not in order:
+            order.append(s.get("id"))
+    mapping = {old: new for new, old in enumerate(order, 1)}
+
+    def fix(text):
+        def sub(m):
+            ids = sorted({mapping.get(i, i) for i in expand_cites(m.group(1))})
+            return "[" + ",".join(str(i) for i in ids) + "]"
+        return CITE_RE.sub(sub, text)
+
+    def walk(obj):
+        if isinstance(obj, str):
+            return fix(obj)
+        if isinstance(obj, list):
+            return [walk(o) for o in obj]
+        if isinstance(obj, dict):
+            return {k: (walk(v) if k != "sources" else v) for k, v in obj.items()}
+        return obj
+
+    out = walk(data)
+    sources = []
+    for s in data.get("sources", []):
+        s = dict(s)
+        s["id"] = mapping.get(s.get("id"), s.get("id"))
+        sources.append(s)
+    out["sources"] = sorted(sources, key=lambda s: s["id"])
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("content", type=Path, help="tearsheet.json")
@@ -539,9 +630,15 @@ def main() -> int:
     ap.add_argument("--check-only", action="store_true", help="run content checks only")
     ap.add_argument("--no-pdf", action="store_true", help="write HTML and Markdown only")
     ap.add_argument("--chrome", help="path to a Chrome/Chromium/Edge binary")
+    ap.add_argument("--renumber", action="store_true",
+                    help="renumber sources by first citation, rewrite the JSON in place, then continue")
     args = ap.parse_args()
 
     data = json.loads(args.content.read_text(encoding="utf-8"))
+    if args.renumber:
+        data = renumber(data)
+        args.content.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        print(f"Renumbered {len(data.get('sources', []))} sources in {args.content}")
     errors, warnings, stats = check(data)
 
     print(f"Content: {stats['words']} words (target {WORD_TARGET[0]}-{WORD_TARGET[1]}), "
@@ -590,14 +687,19 @@ def main() -> int:
     pages = count_pages(pdf_path)
     print(f"Wrote {pdf_path} ({engine}, {pages} page{'s' if pages != 1 else ''})")
     if make_preview(pdf_path, html_path, png_path, chrome):
-        fill_ratio = page_fill(png_path)
+        fill_ratio = page_fill(png_path) if pages == 1 else None
         print(f"Wrote {png_path}" + (f" (content reaches {fill_ratio:.0%} of page height)" if fill_ratio is not None else ""))
-        if fill_ratio is not None and pages == 1 and fill_ratio < 0.80:
+        if fill_ratio is not None and fill_ratio < 0.80:
             print("NOTE    Page is under-filled; there is room for one more high-value point if the evidence supports it.")
     if pages != 1:
-        extra = overflow_words(pdf_path)
-        hint = f" (~{extra} words spill past page 1)" if extra else ""
-        print(f"FAIL    PDF has {pages} pages{hint}. Cut lower-priority content; do not shrink fonts.")
+        spill = (overflow_text(pdf_path) or "").split()
+        if spill:
+            print(f"FAIL    PDF has {pages} pages: ~{len(spill)} words spill past page 1, starting at: "
+                  f"\"{' '.join(spill[:14])}\"")
+        else:
+            print(f"FAIL    PDF has {pages} pages.")
+        print("        Body columns balance automatically, so any cut in sections A-E shortens the page. If the spill")
+        print("        is sources, merge or trim sources first. Cut content; never shrink fonts or margins.")
         return 3
     print("OK      One page.")
     return 0

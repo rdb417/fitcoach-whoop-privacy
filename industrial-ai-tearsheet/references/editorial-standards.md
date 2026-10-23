@@ -12,7 +12,7 @@ Read this before drafting `tearsheet.json`. The reader is a technically fluent i
 
 ## Word budget
 
-Target 350 to 500 words for the body (sources excluded). Approximate allocation:
+Target 350 to 500 words for the body (sources excluded); in practice 380 to 460 words with up to about 9 sources fills one page well. The source list takes real space: each source is one or two lines. Approximate allocation:
 
 | Part | Words |
 |---|---|
@@ -63,7 +63,9 @@ Cut in this order, re-rendering after each cut:
 2. Redundancy between sections (the same point in A, B and F).
 3. Secondary competitors and expansion-market speculation.
 4. Detail inside bullets (keep the claim, drop the elaboration).
-5. Fewer sources: merge duplicate sources, drop ones that only repeat a stronger source.
+5. Fewer sources: merge sources from the same publisher (one PitchBook entry covering profile, deals and investors), drop ones that only repeat a stronger source, and shorten titles to about six words. Then run `--renumber`.
+
+The body columns balance automatically (sections can flow across the column break), so a cut anywhere in sections A to E shortens the page. If the renderer says page 2 starts inside the sources, trim sources before cutting analysis.
 
 Never shrink fonts, margins or line spacing to fit. Never drop the three questions, the evidence tags, or the alert.
 
@@ -81,5 +83,5 @@ If the renderer reports content reaching less than about 80% of the page and you
 - [ ] Two to four competitors or alternatives, each confirmed to exist and target the same workflow.
 - [ ] Section F follows from the evidence above it; Volkswagen mentioned only if there is a concrete workflow match.
 - [ ] Exactly three questions, each specific to this company, each with a one-line why.
-- [ ] Research date set; `independent_research` accurate.
+- [ ] Research date set; `research_access` accurate (full, search_only, none).
 - [ ] Renderer reports one page and no errors; preview image inspected for clipping, awkward breaks and balance.

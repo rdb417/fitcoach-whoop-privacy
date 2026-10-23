@@ -77,7 +77,10 @@
 
   /* Body */
   .body { column-count: 2; column-gap: 18pt; margin-top: 8pt; column-fill: balance; }
-  .sec { break-inside: avoid; margin: 0 0 6.5pt 0; }
+  /* Sections may flow across the column break so the two columns balance; keep headings with text. */
+  .sec { margin: 0 0 6.5pt 0; }
+  .sec p, .sec li { orphans: 2; widows: 2; }
+  .sec li { break-inside: avoid; }
   h2 {
     font-size: 7.1pt; letter-spacing: .1em; text-transform: uppercase; font-weight: 700;
     color: var(--accent); margin: 0 0 2pt 0; break-after: avoid;
