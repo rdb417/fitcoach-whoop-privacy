@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: autonomous-mfg-machina
+expected_outcome: |
+  A one-page tear sheet explaining Machina Labs' robotic forming approach, whether the
+  business model is technology vendor versus manufacturer, its customers and contracts with
+  their status, capital intensity, and three tailored questions.

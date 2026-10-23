@@ -1,0 +1,7 @@
+schema_version: "1.1"
+name: robotics-fm-skild
+expected_outcome: |
+  A one-page tear sheet that explains Skild AI's robot foundation-model approach (data
+  sources, training, embodiment), separates research demos from deployed task performance,
+  names relevant foundation-model and full-stack alternatives, and asks discriminating
+  questions about data, deployment and business model.

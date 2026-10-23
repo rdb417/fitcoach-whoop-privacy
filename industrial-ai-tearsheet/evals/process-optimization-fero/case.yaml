@@ -1,0 +1,7 @@
+schema_version: "1.1"
+name: process-optimization-fero
+expected_outcome: |
+  A one-page tear sheet explaining Fero Labs' process optimization approach for industrial
+  plants, the integration with plant data, the buyer, alternatives such as APC/optimization
+  suites from automation incumbents, evidence of customer value, and three tailored
+  questions.

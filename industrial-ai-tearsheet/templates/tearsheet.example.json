@@ -1,0 +1,68 @@
+{
+  "_comment": "ILLUSTRATIVE SCHEMA EXAMPLE. 'Vireo Inspection' is fictional; do not reuse any fact below. Inline markup: **bold**, *italic*, [n] or [1,3] cites source n, {CR} company-reported, {INF} analyst inference, {UNK} unknown. Sections take a string (one paragraph), a list (bullets), or {\"text\": ..., \"bullets\": [...]}.",
+  "meta": {
+    "firm": "Leitmotif",
+    "prepared_for": "Partner briefing",
+    "meeting": "Intro call with CEO and CTO",
+    "meeting_date": "2026-11-04",
+    "research_date": "2026-10-23",
+    "independent_research": true,
+    "research_basis": "Independent web research plus supplied deck",
+    "alert": ""
+  },
+  "company": {
+    "name": "Vireo Inspection",
+    "website": "vireo.example",
+    "headquarters": "Stuttgart, DE",
+    "founded": "2022 [1]",
+    "stage": "Seed",
+    "capital_raised": "€6M disclosed [2]",
+    "one_liner": "Inline weld-seam inspection for automotive body shops that learns new part variants from a few dozen labeled images, attacking the retraining cost that stalls most vision QA rollouts."
+  },
+  "sections": {
+    "company_product": "Vireo sells a camera-plus-software station that inspects resistance spot and laser welds on body-in-white lines and flags defects before paint. Buyers are plant quality and manufacturing engineering leads at OEMs and Tier 1 suppliers. The value case is catching weld defects that today rely on destructive teardown sampling.",
+    "technology": {
+      "text": "Structured-light 3D capture feeds a defect model pre-trained on a large weld image corpus, then adapted per line with few-shot fine-tuning {CR}.",
+      "bullets": [
+        "**Claimed edge:** new variant onboarding in days rather than the weeks typical for rules-based machine vision [3] {CR}.",
+        "**Likely moat, if any:** the labeled weld-defect corpus and line-side calibration tooling, not the model architecture {INF}.",
+        "Runs on an edge PC at the station; results pushed to MES over OPC UA [3]."
+      ]
+    },
+    "market": {
+      "text": "Initial wedge is weld QA in automotive body shops, with battery-pack and structural-casting inspection as adjacent expansions {INF}.",
+      "bullets": [
+        "**Cognex / Keyence:** incumbent smart cameras with rules plus deep-learning add-ons; broad installed base and integrator channels.",
+        "**Internal OEM vision teams:** the real build-versus-buy alternative at large OEMs {INF}.",
+        "**Differentiation:** retraining speed and weld-specific defect taxonomy; durability depends on data scale {INF}."
+      ]
+    },
+    "team_financing": "CEO previously ran body-shop quality at a German OEM plant [4]; CTO holds a PhD in 3D vision [4]. Seed led by a regional industrial fund [2]. No follow-on round disclosed {UNK}.",
+    "traction": "Company reports two paid pilots and one production line at a Tier 1 supplier {CR}. No customer has confirmed publicly, and revenue is not disclosed {UNK}."
+  },
+  "perspective": {
+    "interesting": "Retraining cost is the most common reason vision QA pilots fail to scale across lines; if onboarding time holds up in production, the unit of expansion is every new part variant {INF}.",
+    "validate": "Whether the one production line is truly unassisted, and how much line-specific engineering each new deployment still needs.",
+    "fit": "Fits the industrial AI and manufacturing focus; weld QA is relevant to automotive body shops broadly, so any Volkswagen Group angle should be tested rather than assumed {INF}."
+  },
+  "questions": [
+    {
+      "question": "On the production line, how many engineer-days did onboarding the last new part variant take, and who did the labeling?",
+      "why": "Separates a product from a services business."
+    },
+    {
+      "question": "What false-reject rate does the plant accept at line speed, and what is it today versus the pilot?",
+      "why": "Tests whether the system is trusted to run without manual re-inspection."
+    },
+    {
+      "question": "What would it take for the Tier 1 to deploy on a second plant without Vireo engineers on site?",
+      "why": "Reveals deployment scalability and the real sales motion."
+    }
+  ],
+  "sources": [
+    {"id": 1, "publisher": "Handelsregister", "title": "Company registration", "date": "2022", "url": "https://example.org/registry"},
+    {"id": 2, "publisher": "Press release", "title": "Vireo raises €6M seed", "date": "2025-03", "url": "https://example.org/seed"},
+    {"id": 3, "publisher": "Company website", "title": "Product page", "date": "accessed 2026-10-23", "url": "https://vireo.example/product"},
+    {"id": 4, "publisher": "LinkedIn", "title": "Founder profiles", "date": "accessed 2026-10-23", "url": "https://example.org/founders"}
+  ]
+}

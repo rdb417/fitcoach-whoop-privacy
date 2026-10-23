@@ -1,0 +1,7 @@
+schema_version: "1.1"
+name: noetive-requested-example
+expected_outcome: |
+  A one-page PDF tear sheet on the correct Noetive (noetive.ai) with all sections A-G,
+  evidence tags, cited sources, a research date, and exactly three company-specific
+  questions. Claims that only the company makes are tagged company-reported; missing data is
+  marked unknown rather than invented.

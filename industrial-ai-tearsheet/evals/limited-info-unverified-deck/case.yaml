@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: limited-info-unverified-deck
+expected_outcome: |
+  Public information is essentially absent. The tear sheet must rely on the supplied deck,
+  tag its revenue, customer and funding claims as company-reported, flag prominently that
+  independent verification was not possible, avoid inventing competitors' facts or company
+  facts, and turn the biggest unverified claims into the call questions.
+context:
+  scaffold_script: place-files.sh

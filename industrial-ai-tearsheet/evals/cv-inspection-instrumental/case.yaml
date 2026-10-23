@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: cv-inspection-instrumental
+expected_outcome: |
+  A one-page tear sheet that explains how Instrumental's inspection system works, names
+  relevant vision-inspection alternatives (incumbents and in-house), distinguishes customer
+  logos from confirmed deployments, and gives three tailored questions.
