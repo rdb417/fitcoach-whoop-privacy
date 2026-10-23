@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Noetive | Leitmotif tear sheet</title>
+<!--
+  Industrial AI Pre-Call Tear Sheet: one-page layout.
+  Filled by scripts/render_tearsheet.py from tearsheet.json. Placeholders use
+  . Do not shrink font sizes to make content fit: cut content instead.
+-->
+<style>
+  @page { size: Letter; margin: 0.42in 0.5in 0.38in 0.5in; }
+
+  :root {
+    --ink: #16202b;
+    --body: #27313c;
+    --muted: #5d6874;
+    --faint: #8a939c;
+    --rule: #d5dae0;
+    --accent: #1f3a5f;
+    --panel: #f4f6f8;
+    --alert: #8a5a00;
+    --alert-bg: #fbf5e8;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  body {
+    font-family: "Inter", "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+    font-size: 8.9pt;
+    line-height: 1.34;
+    color: var(--body);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .sheet { width: 100%; max-width: 7.5in; margin: 0 auto; }
+  @media screen {
+    body { background: #e9ecef; padding: 24px 0; }
+    .sheet { background: #ffffff; padding: 0.42in 0.5in; max-width: 8.5in; box-shadow: 0 1px 6px rgba(0,0,0,.12); }
+  }
+
+  a { color: inherit; text-decoration: none; }
+  strong { color: var(--ink); font-weight: 600; }
+  p { margin: 0 0 3pt 0; }
+  ul { margin: 0; padding-left: 10pt; }
+  li { margin: 0 0 2pt 0; }
+  li::marker { color: var(--faint); }
+
+  /* Header */
+  .kicker {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 6.9pt; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--muted); border-bottom: 1.4pt solid var(--accent); padding-bottom: 3pt;
+  }
+  .kicker .firm { color: var(--accent); font-weight: 700; }
+  .title-row { margin-top: 7pt; }
+  h1 {
+    font-family: "Inter Display", "Inter", "Helvetica Neue", Arial, sans-serif;
+    font-size: 19pt; line-height: 1.05; font-weight: 650; color: var(--ink);
+    margin: 0; letter-spacing: -.01em;
+  }
+  .oneliner { font-size: 10.2pt; line-height: 1.32; color: var(--ink); margin: 3pt 0 0 0; }
+  .snapshot {
+    display: grid; grid-template-columns: repeat(5, auto); justify-content: space-between;
+    column-gap: 10pt; margin-top: 7pt; padding: 4pt 0; border-top: .6pt solid var(--rule); border-bottom: .6pt solid var(--rule);
+  }
+  .snapshot .cell { min-width: 0; }
+  .snapshot .k { font-size: 6.4pt; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+  .snapshot .v { font-size: 8.4pt; color: var(--ink); font-weight: 500; }
+
+  .alert {
+    margin-top: 5pt; padding: 3.5pt 6pt; background: var(--alert-bg); border-left: 2pt solid var(--alert);
+    font-size: 8.2pt; color: #4a3500;
+  }
+  .alert b { color: var(--alert); font-weight: 650; }
+
+  /* Body */
+  .body { column-count: 2; column-gap: 18pt; margin-top: 8pt; column-fill: balance; }
+  .sec { break-inside: avoid; margin: 0 0 6.5pt 0; }
+  h2 {
+    font-size: 7.1pt; letter-spacing: .1em; text-transform: uppercase; font-weight: 700;
+    color: var(--accent); margin: 0 0 2pt 0; break-after: avoid;
+  }
+  h2 .letter { color: var(--faint); font-weight: 600; margin-right: 3pt; }
+
+  /* Perspective panel */
+  .perspective { background: var(--panel); padding: 6pt 8pt 6pt 8pt; margin-top: 1pt; break-inside: avoid; }
+  .perspective .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; column-gap: 12pt; }
+  .perspective h3 { font-size: 7pt; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); margin: 0 0 1.5pt 0; font-weight: 700; }
+
+  /* Questions */
+  .questions { margin-top: 7pt; break-inside: avoid; }
+  .questions ol { margin: 0; padding-left: 13pt; }
+  .questions li { margin: 0 0 3pt 0; padding-left: 1pt; }
+  .questions li::marker { color: var(--accent); font-weight: 700; }
+  .questions .q { color: var(--ink); font-weight: 550; }
+  .questions .why { color: var(--muted); font-size: 8.1pt; }
+
+  /* Evidence tags and citations */
+  sup.ref { font-size: 5.8pt; color: var(--accent); vertical-align: super; line-height: 0; margin-left: .5pt; font-weight: 600; }
+  .tag {
+    display: inline-block; font-size: 5.7pt; line-height: 1; letter-spacing: .05em; font-weight: 700;
+    padding: 1pt 2pt .8pt 2pt; border-radius: 1.5pt; vertical-align: 1pt; margin-left: 1.5pt; text-transform: uppercase;
+  }
+  .tag.cr  { color: #7a4b00; background: #f7ead2; }
+  .tag.inf { color: #24476d; background: #e3ebf4; }
+  .tag.unk { color: #7b1f1f; background: #f6e1e1; }
+
+  /* Footer */
+  .footer { margin-top: 7pt; border-top: .6pt solid var(--rule); padding-top: 3.5pt; font-size: 6.6pt; line-height: 1.3; color: var(--muted); }
+  .legend { display: flex; flex-wrap: wrap; justify-content: space-between; column-gap: 10pt; row-gap: 1pt; margin-bottom: 2.5pt; }
+  .legend .research { color: var(--faint); }
+  .legend .tag { margin-left: 0; margin-right: 1.5pt; }
+  .sources { column-count: 2; column-gap: 14pt; }
+  .sources div { break-inside: avoid; margin-bottom: .8pt; overflow-wrap: anywhere; }
+  .sources .n { color: var(--accent); font-weight: 700; margin-right: 2pt; }
+  .sources .u { color: var(--faint); }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <header>
+    <div class="kicker">
+      <span><span class="firm">Leitmotif</span> &nbsp;·&nbsp; Pre-call tear sheet &nbsp;·&nbsp; Partner briefing</span>
+      <span>Intro call with founders · Week of 2026-10-26</span>
+    </div>
+    <div class="title-row">
+      <h1>Noetive</h1>
+      <p class="oneliner">AI agents plus in-house floor sensors that take over operational decisions such as production planning in plants and logistics; Eclipse-built, one named customer, $41M seed&nbsp;<sup class="ref">1,2</sup>.</p>
+    </div>
+    <div class="snapshot"><div class="cell"><div class="k">Website</div><div class="v">noetive.ai</div></div><div class="cell"><div class="k">Headquarters</div><div class="v">Los Altos, CA&nbsp;<sup class="ref">1</sup> (press says San Francisco)</div></div><div class="cell"><div class="k">Founded</div><div class="v">2026&nbsp;<sup class="ref">1</sup></div></div><div class="cell"><div class="k">Stage</div><div class="v">Seed</div></div><div class="cell"><div class="k">Capital raised</div><div class="v">$41M seed, Sep 2026&nbsp;<sup class="ref">1</sup></div></div></div>
+    <div class="alert"><b>Read first.</b> Five-month-old company built inside its lead investor, Eclipse; the CEO is still listed as Eclipse's Chief AI Officer&nbsp;<sup class="ref">1,4</sup>. noetive.ai and most articles could not be opened, so product detail rests on PitchBook and launch-coverage excerpts.</div>
+  </header>
+
+  <section class="body">
+    <div class="sec"><h2><span class="letter">A</span>Company and product</h2><p>Agents run on top of a customer's existing systems and take over operational decisions, fed by a multimodal sensing pod Noetive designs: an "intelligence of record"&nbsp;<sup class="ref">2</sup>&nbsp;<span class="tag cr">CR</span>. Targets: manufacturing, logistics, energy, data centers&nbsp;<sup class="ref">2</sup>.</p></div><div class="sec"><h2><span class="letter">B</span>Technology and differentiation</h2><p>A core model (the "brain") learns how one operation runs from system data and pod signals; each deployment is meant to improve the shared model&nbsp;<sup class="ref">2</sup>&nbsp;<span class="tag cr">CR</span>.</p><ul><li><strong>Not disclosed:</strong> whether the brain is a trained model or agents on frontier LLMs, what the pod senses, how many pods are installed&nbsp;<span class="tag unk">Unknown</span>.</li><li><strong>Integration:</strong> reads Steuben's system data plus floor conditions&nbsp;<sup class="ref">2</sup>; whether agents write plans back to ERP or only advise is not disclosed&nbsp;<span class="tag unk">Unknown</span>.</li><li><strong>Likely moat, if any:</strong> operating data (plans, outcomes, floor signals) compounding across sites, plus planner reliance; not the model&nbsp;<span class="tag inf">INF</span>. Own pods add data rivals lack but slow rollout versus software on existing cameras.</li></ul></div><div class="sec"><h2><span class="letter">C</span>Market and competition</h2><p>Wedge: production planning in food and beverage plants, today mostly ERP plus spreadsheets.</p><ul><li><strong>Palantir AIP:</strong> production scheduling over ERP, MES and PLM data&nbsp;<sup class="ref">6</sup>; the default operational layer.</li><li><strong>Kinaxis:</strong> Maestro planning suite adding agents&nbsp;<sup class="ref">7</sup>; heavy for mid-size plants.</li><li><strong>Archetype AI:</strong> sensor-data foundation model, $35M Series A Nov 2025&nbsp;<sup class="ref">5</sup>; closest on sensing.</li></ul></div><div class="sec"><h2><span class="letter">D</span>Team and financing</h2><p>CEO Amir Frenkel: about a decade as Meta VP (GenAI, XR), earlier Google and Amazon&nbsp;<sup class="ref">1,3</sup>; Eclipse's Chief AI Officer since April 2026, and Noetive formed inside Eclipse&nbsp;<sup class="ref">2</sup>. CPO Dan Barak founded Stackbit (sold to Netlify) after Lyft and Meta&nbsp;<sup class="ref">3</sup>. Eclipse led, with eight funds and 11 angels (Bosworth, Al-Dahle, Schroepfer)&nbsp;<sup class="ref">1</sup>. No founder with plant operations experience disclosed&nbsp;<span class="tag unk">Unknown</span>.</p></div><div class="sec"><h2><span class="letter">E</span>Commercial traction</h2><p>Sole named customer Steuben Foods (aseptic contract manufacturer): its executive Menachem Katz says planning that ran monthly over a week now runs daily in minutes&nbsp;<sup class="ref">2</sup>. Design partnership; paid status, vendor effort unknown&nbsp;<span class="tag unk">Unknown</span>. PitchBook lists revenue, no figures&nbsp;<sup class="ref">1</sup>.</p></div>
+  </section>
+
+  <section class="perspective">
+    <h2><span class="letter">F</span>Preliminary investment perspective</h2>
+    <div class="grid"><div><h3>What is interesting</h3><p>A customer-quoted week-to-minutes planning gain&nbsp;<sup class="ref">2</sup> is a concrete signal at five months. Interesting if it holds without Noetive engineers and transfers to a second plant&nbsp;<span class="tag inf">INF</span>.</p></div><div><h3>What needs validation</h3><p>Product versus per-site engineering; and Eclipse dependency (it built the company and employs the CEO&nbsp;<sup class="ref">1,2</sup>): check terms, board and room for an outside Series A lead.</p></div><div><h3>Leitmotif relevance</h3><p>Fits the industrial AI focus. Planning and inbound logistics at Volkswagen Group component plants could match once results extend beyond food&nbsp;<span class="tag inf">INF</span>. No portfolio overlap found.</p></div></div>
+  </section>
+
+  <section class="questions">
+    <h2><span class="letter">G</span>Three questions for the introductory call</h2>
+    <ol><li><span class="q">At Steuben, which systems do you read and write, who signs off the daily plan, and how many of your engineer-days did it take?</span> <span class="why">Separates product from forward-deployed services.</span></li><li><span class="q">What did your second design partner reuse from the Steuben model, and what was rebuilt?</span> <span class="why">Tests self-improvement.</span></li><li><span class="q">What does the pod capture at Steuben that ERP data missed, and how much gain remains without it?</span> <span class="why">Moat or drag?</span></li></ol>
+  </section>
+
+  <footer class="footer">
+    <div class="legend">
+      <span><span class="tag cr">CR</span> company-reported, not independently verified &nbsp; <span class="tag inf">INF</span> analyst inference &nbsp; <span class="tag unk">Unknown</span> not established &nbsp; <sup class="ref">n</sup> cites source n</span>
+      <span class="research">Research date 2026-10-23 · Independent research: PitchBook and web search; company site and most articles could not be opened</span>
+    </div>
+    <div class="sources"><div><span class="n">1</span>PitchBook, Noetive profile, deals, team, investors (accessed 2026-10-23) <a class="u" href="https://my.pitchbook.com/profile/1497563-29/company/profile">my.pitchbook.com/profile/1497563-29/company/profile</a></div><div><span class="n">2</span>SiliconANGLE, Noetive launches with $41M (via PitchBook excerpt) (2026-09-16) <a class="u" href="https://siliconangle.com/2026/09/16/noetive-launches-with-41m-to-bring-self-improving-ai-to-factories-and-logistics/">siliconangle.com/2026/09/16/noetive-launches-with-41m-t…</a></div><div><span class="n">3</span>Craft Ventures, Our partnership with Noetive (via PitchBook excerpt) (2026-10-06) <a class="u" href="https://www.craftventures.com/articles/our-partnership-with-noetive-building-the-intelligence-of-record-for-the-physical-economy">craftventures.com/articles/our-partnership-with-noetive…</a></div><div><span class="n">4</span>Eclipse, Team page, Amir Frenkel (search snippet) (accessed 2026-10-23) <a class="u" href="https://eclipse.capital/team/amir-frenkel">eclipse.capital/team/amir-frenkel</a></div><div><span class="n">5</span>Business Wire, Archetype AI raises $35M (search snippet) (2025-11-20) <a class="u" href="https://www.businesswire.com/news/home/20251120000333/en/">businesswire.com/news/home/20251120000333/en</a></div><div><span class="n">6</span>SoftwareOne, Palantir AIP for Production Scheduling (snippet) (accessed 2026-10-23) <a class="u" href="https://platform.softwareone.com/product/aip-for-production-scheduling-management/PCP-3409-0127">platform.softwareone.com/product/aip-for-production-sch…</a></div><div><span class="n">7</span>Kinaxis, 2026 Gartner MQ release (search snippet) (2026) <a class="u" href="https://investors.kinaxis.com/news-releases/news-release-details/2026/Kinaxis-Recognized-as-a-Leader-in-the-2026-Gartner-Magic-Quadrant-Reports-for-Supply-Chain-Planning/default.aspx">investors.kinaxis.com/news-releases/news-release-detail…</a></div></div>
+  </footer>
+</main>
+</body>
+</html>
