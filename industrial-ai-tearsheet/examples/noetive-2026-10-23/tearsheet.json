@@ -5,108 +5,100 @@
     "meeting": "Intro call with founders",
     "meeting_date": "Week of 2026-10-26",
     "research_date": "2026-10-23",
-    "independent_research": true,
-    "research_basis": "Independent research: PitchBook and web search; company site and most articles could not be opened",
-    "alert": "Five-month-old company built inside its lead investor, Eclipse; the CEO is still listed as Eclipse's Chief AI Officer [1,4]. noetive.ai and most articles could not be opened, so product detail rests on PitchBook and launch-coverage excerpts."
+    "research_access": "search_only",
+    "research_basis": "PitchBook, launch coverage via PitchBook news, web search; noetive.ai could not be opened",
+    "alert": "Five weeks out of stealth and built inside lead investor Eclipse, which recruited the founders; CEO Amir Frenkel is also Eclipse's Chief AI Officer [2,4]. noetive.ai could not be opened here, so product detail rests on launch coverage and PitchBook."
   },
   "company": {
     "name": "Noetive",
     "website": "noetive.ai",
-    "headquarters": "Los Altos, CA [1] (press says San Francisco)",
+    "headquarters": "Los Altos, CA [1]",
     "founded": "2026 [1]",
     "stage": "Seed",
     "capital_raised": "$41M seed, Sep 2026 [1]",
-    "one_liner": "AI agents plus in-house floor sensors that take over operational decisions such as production planning in plants and logistics; Eclipse-built, one named customer, $41M seed [1,2]."
+    "one_liner": "AI agents plus in-house floor sensors that take over operational decisions such as production planning, positioned as a decision layer above a plant's ERP and MES."
   },
   "sections": {
-    "company_product": "Agents run on top of a customer's existing systems and take over operational decisions, fed by a multimodal sensing pod Noetive designs: an \"intelligence of record\" [2] {CR}. Targets: manufacturing, logistics, energy, data centers [2].",
+    "company_product": "Agents run on top of a customer's existing systems and make operational decisions end to end, fed by a multimodal sensing pod Noetive designs [2] {CR}. The company says design partners in manufacturing, logistics, energy and data centers use it [2] {CR}.",
     "technology": {
-      "text": "A core model (the \"brain\") learns how one operation runs from system data and pod signals; each deployment is meant to improve the shared model [2] {CR}.",
+      "text": "A core model (the \"brain\") learns how an operation runs from system data and pod signals, acts, and learns from outcomes; each deployment is meant to improve the shared model [2,3] {CR}.",
       "bullets": [
-        "**Not disclosed:** whether the brain is a trained model or agents on frontier LLMs, what the pod senses, how many pods are installed {UNK}.",
-        "**Integration:** reads Steuben's system data plus floor conditions [2]; whether agents write plans back to ERP or only advise is not disclosed {UNK}.",
-        "**Likely moat, if any:** operating data (plans, outcomes, floor signals) compounding across sites, plus planner reliance; not the model {INF}. Own pods add data rivals lack but slow rollout versus software on existing cameras."
+        "**Not disclosed:** in-house model or agents on frontier models; what the pod senses; write-back to ERP or advice only {UNK}.",
+        "**Likely moat, if any:** plan-versus-actual data compounding across sites, not the model {INF}. The pod adds data rivals lack, but also hardware cost and, in German plants, works-council approval for monitoring devices {INF}."
       ]
     },
     "market": {
-      "text": "Wedge: production planning in food and beverage plants, today mostly ERP plus spreadsheets.",
+      "text": "Wedge appears to be production planning in process plants, today run in ERP or APS tools, spreadsheets and planner judgment {INF}.",
       "bullets": [
-        "**Palantir AIP:** production scheduling over ERP, MES and PLM data [6]; the default operational layer.",
-        "**Kinaxis:** Maestro planning suite adding agents [7]; heavy for mid-size plants.",
-        "**Archetype AI:** sensor-data foundation model, $35M Series A Nov 2025 [5]; closest on sensing."
+        "**Palantir AIP / Warp Speed:** scheduling and production workflows over ERP, MES and PLM data, sold to manufacturers [6].",
+        "**Archetype AI:** sensor-data foundation model (Newton); $35M round Nov 2025 [5]. Closest on physical sensing.",
+        "**SAP, Kinaxis, o9:** the planning suites Noetive sits on, likely to add agents themselves {INF}."
       ]
     },
-    "team_financing": "CEO Amir Frenkel: about a decade as Meta VP (GenAI, XR), earlier Google and Amazon [1,3]; Eclipse's Chief AI Officer since April 2026, and Noetive formed inside Eclipse [2]. CPO Dan Barak founded Stackbit (sold to Netlify) after Lyft and Meta [3]. Eclipse led, with eight funds and 11 angels (Bosworth, Al-Dahle, Schroepfer) [1]. No founder with plant operations experience disclosed {UNK}.",
-    "traction": "Sole named customer Steuben Foods (aseptic contract manufacturer): its executive Menachem Katz says planning that ran monthly over a week now runs daily in minutes [2]. Design partnership; paid status, vendor effort unknown {UNK}. PitchBook lists revenue, no figures [1]."
+    "team_financing": "CEO Amir Frenkel spent nearly a decade as a Meta VP over AI applied research, after Google (Glass), Amazon, TI and Palm [4]. CPO Dan Barak founded Stackbit, sold to Netlify, after product roles at Lyft and Meta [3]. Eclipse led the $41M seed [1], joined by 19 others including Craft, Westly, Gigascale and angels Bosworth and Schroepfer [1]. No founder with plant operations background disclosed {UNK}.",
+    "traction": "One named partner: Steuben Foods, an aseptic food and beverage manufacturer, whose CEO Menachem Katz says planning that ran monthly over a week now runs daily in minutes [2]. A design-partner quote, not a measured result; paid status and vendor effort undisclosed {UNK}. PitchBook tags it as generating revenue, no figures [1]."
   },
   "perspective": {
-    "interesting": "A customer-quoted week-to-minutes planning gain [2] is a concrete signal at five months. Interesting if it holds without Noetive engineers and transfers to a second plant {INF}.",
-    "validate": "Product versus per-site engineering; and Eclipse dependency (it built the company and employs the CEO [1,2]): check terms, board and room for an outside Series A lead.",
-    "fit": "Fits the industrial AI focus. Planning and inbound logistics at Volkswagen Group component plants could match once results extend beyond food {INF}. No portfolio overlap found."
+    "interesting": "Frontier-AI team aimed at operational decisions, with a customer CEO describing a step change within months. The bet: sensing plus outcome data compounds into a model incumbents cannot copy {INF}.",
+    "validate": "Product versus forward-deployed engineering per site; and Eclipse dependence (it built the company, led the round and employs the CEO): board, terms, room for an outside lead.",
+    "fit": "Fits the industrial AI thesis; no portfolio overlap found. Planning and inbound logistics at Volkswagen Group component or PowerCo plants are a plausible later test {INF}."
   },
   "questions": [
     {
-      "question": "At Steuben, which systems do you read and write, who signs off the daily plan, and how many of your engineer-days did it take?",
-      "why": "Separates product from forward-deployed services."
+      "question": "At Steuben, what does the system decide versus recommend, which systems does it write back to, and how many Noetive engineer-days a week does it still take?",
+      "why": "Separates a product from forward-deployed services."
     },
     {
-      "question": "What did your second design partner reuse from the Steuben model, and what was rebuilt?",
-      "why": "Tests self-improvement."
+      "question": "What does the pod capture that ERP and MES data missed, and how much of the Steuben gain remains without it?",
+      "why": "Tests whether the hardware is the moat or a deployment drag."
     },
     {
-      "question": "What does the pod capture at Steuben that ERP data missed, and how much gain remains without it?",
-      "why": "Moat or drag?"
+      "question": "What did the brain learn at one design partner that made the next deployment faster, and how do you measure that?",
+      "why": "Tests the cross-customer learning claim the thesis rests on."
     }
   ],
   "sources": [
     {
       "id": 1,
       "publisher": "PitchBook",
-      "title": "Noetive profile, deals, team, investors",
+      "title": "Noetive profile, seed deal, investors",
       "date": "accessed 2026-10-23",
       "url": "https://my.pitchbook.com/profile/1497563-29/company/profile"
     },
     {
       "id": 2,
       "publisher": "SiliconANGLE",
-      "title": "Noetive launches with $41M (via PitchBook excerpt)",
+      "title": "Noetive launches with $41M (via PitchBook)",
       "date": "2026-09-16",
       "url": "https://siliconangle.com/2026/09/16/noetive-launches-with-41m-to-bring-self-improving-ai-to-factories-and-logistics/"
     },
     {
       "id": 3,
       "publisher": "Craft Ventures",
-      "title": "Our partnership with Noetive (via PitchBook excerpt)",
+      "title": "Our partnership with Noetive (via PitchBook)",
       "date": "2026-10-06",
       "url": "https://www.craftventures.com/articles/our-partnership-with-noetive-building-the-intelligence-of-record-for-the-physical-economy"
     },
     {
       "id": 4,
       "publisher": "Eclipse",
-      "title": "Team page, Amir Frenkel (search snippet)",
+      "title": "Amir Frenkel, Chief AI Officer (search result)",
       "date": "accessed 2026-10-23",
       "url": "https://eclipse.capital/team/amir-frenkel"
     },
     {
       "id": 5,
       "publisher": "Business Wire",
-      "title": "Archetype AI raises $35M (search snippet)",
+      "title": "Archetype AI raises $35M (search result)",
       "date": "2025-11-20",
       "url": "https://www.businesswire.com/news/home/20251120000333/en/"
     },
     {
       "id": 6,
-      "publisher": "SoftwareOne",
-      "title": "Palantir AIP for Production Scheduling (snippet)",
-      "date": "accessed 2026-10-23",
-      "url": "https://platform.softwareone.com/product/aip-for-production-scheduling-management/PCP-3409-0127"
-    },
-    {
-      "id": 7,
-      "publisher": "Kinaxis",
-      "title": "2026 Gartner MQ release (search snippet)",
-      "date": "2026",
-      "url": "https://investors.kinaxis.com/news-releases/news-release-details/2026/Kinaxis-Recognized-as-a-Leader-in-the-2026-Gartner-Magic-Quadrant-Reports-for-Supply-Chain-Planning/default.aspx"
+      "publisher": "Benzinga",
+      "title": "Palantir Warp Speed launch (search result)",
+      "date": "2024-12",
+      "url": "https://www.benzinga.com/24/12/42443206/palantirs-warp-speed-launches-to-accelerate-us-manufacturing-with-advanced-ai-integration"
     }
   ]
 }

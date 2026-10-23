@@ -159,6 +159,9 @@ def inline_html(text: str) -> str:
     s = s.replace("{UNK}", '<span class="tag unk">Unknown</span>')
     # Keep a tag or citation on the same line as the word before it.
     s = re.sub(r"\s+(<span class=\"tag|<sup class=\"ref\">)", r"&nbsp;\1", s)
+    # Bind the last word, its citation and its tag into one unbreakable unit.
+    s = re.sub(r"(\S+(?:&nbsp;<sup class=\"ref\">[^<]*</sup>)?&nbsp;<span class=\"tag [a-z]+\">[^<]*</span>)",
+               r'<span style="white-space:nowrap">\1</span>', s)
     return s
 
 
