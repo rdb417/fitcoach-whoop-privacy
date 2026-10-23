@@ -39,6 +39,8 @@ Work through these in roughly this order. Search queries are suggestions; adapt 
 | 7. Investment judgment | Why now, why this team, risks, fit | Built from the above plus `investment-assessment.md` and `firm-context.md` |
 | 8. Synthesis | Fact-check, tag, cut | `editorial-standards.md` |
 
+Before drafting, run a dated news sweep so recent developments are not missed: search the company name with the current and previous year, and with "announces", "expands", "partnership", "raises", "acquired" and the names of known customers. Customer expansions, new rounds and status changes from the last 12 months are among the facts partners most need, and they are the easiest to miss when research starts from older profiles. Before writing "no public evidence of X", search specifically for X.
+
 Useful signals that founders rarely volunteer:
 - **Job postings**: "Field Deployment Engineer" and "Solutions Engineer" headcount relative to ML headcount hints at deployment burden.
 - **Customer-side posts**: a plant manager posting about the system is stronger evidence than a logo on the company site.

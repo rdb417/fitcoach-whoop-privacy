@@ -51,4 +51,4 @@ Score each dimension Pass / Partial / Fail. A briefing worth sending passes all 
 
 | Date | Case | Result | Notes |
 |---|---|---|---|
-| 2026-10-23 | all six cases | see iteration-1 summary in the build notes | First iteration run during skill development |
+| 2026-10-23 | all six cases (with skill) | 29/29 assertions passed; one-page PDF in every case | Baselines without the skill: 46% pass rate. Fixes applied after this round: column balancing, compact sources, research_access field, news sweep |
